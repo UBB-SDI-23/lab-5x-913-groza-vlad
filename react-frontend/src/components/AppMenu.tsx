@@ -2,6 +2,7 @@ import { AppBar, Box, Button, IconButton, Toolbar, Typography, colors } from "@m
 import { Link, useLocation } from "react-router-dom";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import AddIcon from '@mui/icons-material/Add';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 
 
 export const AppMenu = () => {
@@ -43,6 +44,15 @@ export const AppMenu = () => {
 						sx={{ mr: 5 }}
 						startIcon={<AddIcon />}>
 						Add Club
+					</Button>
+					<Button
+						variant={path.startsWith("/clubs/most-trophies") ? "outlined" : "text"}
+						to="/clubs/most-trophies"
+						component={Link}
+						color="inherit"
+						sx={{ mr: 5 }}
+						startIcon={<SummarizeIcon />}>
+						Most trophies
 					</Button>
 				</Toolbar>
 			</AppBar>
