@@ -7,6 +7,9 @@ import { AppMenu } from './components/AppMenu';
 import { HomePage } from './components/HomePage';
 import { ClubPlayersDetails } from './components/club/ClubPlayersDetails';
 import { ClubCompetitionsDetails } from './components/club/ClubCompetitionsDetails';
+import { AddClub } from './components/club/AddClub';
+import { UpdateClub } from './components/club/UpdateClub';
+import { DeleteClub } from './components/club/DeleteClub';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,6 +24,9 @@ function App() {
           <Route path="/clubs" element={<ShowAllClubs />} />
           <Route path="/clubs/:clubId/players" element={<ClubPlayersDetails />} />
           <Route path="/clubs/:clubId/competitions" element={<ClubCompetitionsDetails />} />
+          <Route path="/clubs/add" element={<AddClub />} />
+          <Route path="/clubs/:clubId/delete" element={<DeleteClub />}/>
+          <Route path="/clubs/:clubId/edit" element={<UpdateClub />}/>
         </Routes>    
       </Router>
       

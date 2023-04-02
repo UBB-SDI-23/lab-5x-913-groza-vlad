@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FootballClub } from "../../models/FootballClub";
 import { alignProperty } from "@mui/material/styles/cssUtils";
+import { BACKEND_URL } from "../../utils";
 
 export const ClubCompetitionsDetails = () => {
 	const { clubId } = useParams();
@@ -12,7 +13,7 @@ export const ClubCompetitionsDetails = () => {
 
 	useEffect(() => {
 		const fetchClub = async () => {
-			const response = await fetch(`http://localhost:8000/clubs/${clubId}/competitions/`);
+			const response = await fetch(`${BACKEND_URL}/clubs/${clubId}/competitions/`);
 			const club = await response.json();
 			setClub(club);
 		};

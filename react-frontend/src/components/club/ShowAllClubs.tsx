@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import { Container, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, colors } from "@mui/material";
 import { Link } from "react-router-dom";
+import { BACKEND_URL } from "../../utils";
 
 
 export const ShowAllClubs = () => {
@@ -14,7 +15,7 @@ export const ShowAllClubs = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch("http://localhost:8000/clubs/").then(response => response.json()).then(data => { setClubs(data); setLoading(false); });
+        fetch(`${BACKEND_URL}/clubs/`).then(response => response.json()).then(data => { setClubs(data); setLoading(false); });
     } , []);
 
     return (
@@ -70,12 +71,22 @@ export const ShowAllClubs = () => {
                                         </Tooltip>
                                     </IconButton>
 
-                                    <IconButton component={Link} sx={{ mr: 3 }} to={`/clubs/${club.id}/edit`}>
-                                        <EditIcon/>
+                                    <IconButton 
+                                        component={Link} 
+                                        sx={{ mr: 3 }} 
+                                        to={`/clubs/${club.id}/edit`}>
+                                        <Tooltip title="Update club data" arrow>
+                                            <EditIcon/>
+                                        </Tooltip>    
                                     </IconButton>
 
-                                    <IconButton component={Link} sx={{ mr: 3 }} to={`/clubs/${club.id}/delete`}>
-                                        <DeleteForeverIcon />
+                                    <IconButton 
+                                        component={Link} 
+                                        sx={{ mr: 3 }} 
+                                        to={`/clubs/${club.id}/delete`}>
+                                        <Tooltip title="Delete club" arrow>
+                                            <DeleteForeverIcon />
+                                        </Tooltip>
                                     </IconButton>
                                 </TableCell>
                             </TableRow>

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FootballClub } from "../../models/FootballClub";
+import { BACKEND_URL } from "../../utils";
+
 
 export const ClubPlayersDetails = () => {
 	const { clubId } = useParams();
@@ -11,7 +13,7 @@ export const ClubPlayersDetails = () => {
 
 	useEffect(() => {
 		const fetchClub = async () => {
-			const response = await fetch(`http://localhost:8000/clubs/${clubId}/players/`);
+			const response = await fetch(`${BACKEND_URL}/clubs/${clubId}/players/`);
 			const club = await response.json();
 			setClub(club);
 		};
