@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { FootballClub } from "../../models/FootballClub";
-import AddIcon from "@mui/icons-material/Add"
 import ReadMoreIcon from "@mui/icons-material/ReadMore"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
@@ -21,7 +20,7 @@ export const ShowAllClubs = () => {
     return (
       <Container>
          <h1>FootballClubs list</h1>
-         {!loading && clubs.length === 0 && <div>No football clubs int the list</div>}
+         {!loading && clubs.length === 0 && <div>No football clubs in the list</div>}
          {!loading &&
             clubs.length > 0 && (
                 // set the table background color to white and the text color to black

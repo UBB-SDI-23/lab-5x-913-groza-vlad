@@ -10,6 +10,7 @@ import { ClubCompetitionsDetails } from './components/club/ClubCompetitionsDetai
 import { AddClub } from './components/club/AddClub';
 import { UpdateClub } from './components/club/UpdateClub';
 import { DeleteClub } from './components/club/DeleteClub';
+import { ClubsTrophies } from './components/club/ClubTrophiesReport';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -27,6 +28,7 @@ function App() {
           <Route path="/clubs/add" element={<AddClub />} />
           <Route path="/clubs/:clubId/delete" element={<DeleteClub />}/>
           <Route path="/clubs/:clubId/edit" element={<UpdateClub />}/>
+          <Route path='clubs/most-trophies/' element={<ClubsTrophies />} />
         </Routes>    
       </Router>
       
