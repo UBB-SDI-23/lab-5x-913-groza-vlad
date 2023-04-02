@@ -11,9 +11,17 @@ export const UpdateClub = () => {
     const { clubId } = useParams();
     const navigate = useNavigate();
 
-    const [club, setClub] = useState<FootballClub>(
-        
-    );
+    const [club, setClub] = useState<FootballClub>({
+        id: parseInt(String(clubId)),
+        name: "",
+        establishment_year: 0,
+        country: "",
+        city: "",
+        budget: 0,
+        home_kit: "",
+        players: [],
+        competitions: [],
+    });
 
     const updateClub = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
@@ -42,72 +50,67 @@ export const UpdateClub = () => {
                             <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
                                 Club name
                             </FormLabel>
-                            <TextField>
+                            <TextField
                                 id="name"
-                                label="Club name"
                                 variant="outlined"
                                 onChange={(event) => setClub({ ...club, name: event.target.value })}
-                            </TextField>
+                            />
                         </Container>
     
                         <Container sx={{padding: "3px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                             <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
                                 Establishment year
                             </FormLabel>
-                            <TextField>
+                            <TextField
                                 id="establishment_year"
-                                label="Establishment year"
                                 variant="outlined"
-                                onChange={(event) => setClub({ ...club, establishment_year: event.target.value })}
-                            </TextField>
+                                // generate the same code for onChange, but can you convert the string to int?
+                                onChange={(event) => setClub({ ...club, establishment_year: parseInt(event.target.value) })}
+                            />
                         </Container>
 
                         <Container sx={{padding: "3px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                             <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
                                 Country
                             </FormLabel>
-                            <TextField>
+                            <TextField
                                 id="country"
-                                label="Country"
                                 variant="outlined"
                                 onChange={(event) => setClub({ ...club, country: event.target.value })}
-                            </TextField>
+                            />
                         </Container>
 
                         <Container sx={{padding: "3px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                             <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
                                 City
                             </FormLabel>
-                            <TextField>
+                            <TextField
                                 id="city"
-                                label="City"
                                 variant="outlined"
                                 onChange={(event) => setClub({ ...club, city: event.target.value })}
-                            </TextField>
+                            />
                         </Container>
                         
                         <Container sx={{padding: "3px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                             <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
                                 Budget
                             </FormLabel>
-                            <TextField>
+                            <TextField
                                 id="budget"
-                                label="Budget"
                                 variant="outlined"
-                                onChange={(event) => setClub({ ...club, budget: event.target.value })}
-                            </TextField>
+                                onChange={(event) => setClub({ ...club, budget: parseInt(event.target.value) })}
+                            />
                         </Container>
                         
                         <Container sx={{padding: "3px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                             <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
                                 Home kit
                             </FormLabel> 
-                            <TextField>
+                            <TextField
                                 id="home_kit"
-                                label="Home kit"
                                 variant="outlined"
                                 onChange={(event) => setClub({ ...club, home_kit: event.target.value })}
-                            </TextField>
+                            />
                         </Container>
                     </form>
 				</CardContent>
