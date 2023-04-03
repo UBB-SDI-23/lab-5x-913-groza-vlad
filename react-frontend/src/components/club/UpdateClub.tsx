@@ -4,12 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../utils";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FootballClub } from "../../models/FootballClub";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export const UpdateClub = () => {
-    const { clubId } = useParams();
+    const { clubId } = useParams<{ clubId: string }>();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const [club, setClub] = useState<FootballClub>({
         id: parseInt(String(clubId)),
@@ -23,14 +24,33 @@ export const UpdateClub = () => {
         competitions: [],
     });
 
+    useEffect(() => {
+        setLoading(true);
+        fetch(`${BACKEND_URL}/clubs/${clubId}/`).then(response => response.json()).then(data => {
+          setClub(data);
+          setLoading(false);
+        });
+      }, [clubId]);
+
     const updateClub = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
-        try {
-			await axios.put(`${BACKEND_URL}/clubs/${clubId}/`);
-		    navigate("/clubs");
-		} catch (error) {
-			console.log(error);
-		}
+        setLoading(true);
+        fetch(`${BACKEND_URL}/clubs/${clubId}/`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(club)
+        }).then(response => {
+            if (response.ok) {
+                alert("Club updated successfully");
+            } else {
+                console.error('Error updating club:', response.statusText);
+            }
+            navigate(`/clubs/`);
+            setLoading(false);
+        }).catch(error => {
+            console.error('Error updating club:', error);
+            setLoading(false);
+        });
     }
 
     const handleCancel = (event: { preventDefault: () => void }) => {

@@ -23,7 +23,6 @@ export const ShowAllClubs = () => {
          {!loading && clubs.length === 0 && <div>No football clubs in the list</div>}
          {!loading &&
             clubs.length > 0 && (
-                // set the table background color to white and the text color to black
                 <TableContainer style={{backgroundColor: colors.grey[50]}}>
                     <Table sx={{ minWidth: 850}} aria-label="simple table">
                         <TableHead>
@@ -40,7 +39,7 @@ export const ShowAllClubs = () => {
                         </TableHead>
                         
                         <TableBody>
-                        {clubs.map((club: FootballClub, index) => (
+                        {clubs.sort((a: FootballClub, b: FootballClub) => a.establishment_year - b.establishment_year).map((club: FootballClub, index) => (
                             <TableRow key={club.id}>
                                 <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
                                 <TableCell align="center" component="th" scope="row">
