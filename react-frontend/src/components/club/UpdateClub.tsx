@@ -73,6 +73,7 @@ export const UpdateClub = () => {
                             <TextField
                                 id="name"
                                 variant="outlined"
+                                value={club.name}
                                 onChange={(event) => setClub({ ...club, name: event.target.value })}
                             />
                         </Container>
@@ -84,7 +85,7 @@ export const UpdateClub = () => {
                             <TextField
                                 id="establishment_year"
                                 variant="outlined"
-                                // generate the same code for onChange, but can you convert the string to int?
+                                value={club.establishment_year}
                                 onChange={(event) => setClub({ ...club, establishment_year: parseInt(event.target.value) })}
                             />
                         </Container>
@@ -96,6 +97,7 @@ export const UpdateClub = () => {
                             <TextField
                                 id="country"
                                 variant="outlined"
+                                value={club.country}
                                 onChange={(event) => setClub({ ...club, country: event.target.value })}
                             />
                         </Container>
@@ -107,6 +109,7 @@ export const UpdateClub = () => {
                             <TextField
                                 id="city"
                                 variant="outlined"
+                                value={club.city}
                                 onChange={(event) => setClub({ ...club, city: event.target.value })}
                             />
                         </Container>
@@ -118,6 +121,7 @@ export const UpdateClub = () => {
                             <TextField
                                 id="budget"
                                 variant="outlined"
+                                value={club.budget}
                                 onChange={(event) => setClub({ ...club, budget: parseInt(event.target.value) })}
                             />
                         </Container>
@@ -129,6 +133,7 @@ export const UpdateClub = () => {
                             <TextField
                                 id="home_kit"
                                 variant="outlined"
+                                value={club.home_kit}
                                 onChange={(event) => setClub({ ...club, home_kit: event.target.value })}
                             />
                         </Container>
