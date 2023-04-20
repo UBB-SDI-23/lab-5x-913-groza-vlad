@@ -2,7 +2,8 @@ from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from .views import player_detail, player_list, club_detail, club_list, PlayersWithAge, \
     competition_list, competition_detail, record_list, record_detail, ClubsTrophiesSummary, FootballClubView, \
-    FootballClubDetail, FootballClubCompetitionsView, FootballClubCompetitionsDetail, ClubsByAveragePlayersAge
+    FootballClubDetail, FootballClubCompetitionsView, FootballClubCompetitionsDetail, ClubsByAveragePlayersAge, \
+    CompetitionsFootballClubDetail
 
 urlpatterns = [
     path('players/', player_list),
@@ -20,6 +21,7 @@ urlpatterns = [
     path('clubs/<int:pk>/players/', FootballClubDetail.as_view()),
     path('clubs/competitions/', FootballClubCompetitionsView.as_view()),
     path('clubs/<int:pk>/competitions/', FootballClubCompetitionsDetail.as_view()),
+    path('competitions/<int:pk>/clubs/', CompetitionsFootballClubDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FootballClub } from "../../models/FootballClub";
-import { alignProperty } from "@mui/material/styles/cssUtils";
 import { BACKEND_URL } from "../../utils";
+import { ClubMenu } from "./ClubMenu";
 
 export const ClubCompetitionsDetails = () => {
 	const { clubId } = useParams();
@@ -22,6 +22,7 @@ export const ClubCompetitionsDetails = () => {
 
 	return (
 		<Container>
+			<ClubMenu />
 			<Card>
 				<CardContent>
 					<IconButton component={Link} sx={{ mr: 3 }} to={`/clubs`}>

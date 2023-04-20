@@ -6,6 +6,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import { Container, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, colors } from "@mui/material";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../utils";
+import { ClubMenu } from "./ClubMenu";
 
 
 export const ShowAllClubs = () => {
@@ -19,6 +20,7 @@ export const ShowAllClubs = () => {
 
     return (
       <Container>
+        <ClubMenu />
          <h1>FootballClubs list</h1>
          {!loading && clubs.length === 0 && <div>No football clubs in the list</div>}
          {!loading &&

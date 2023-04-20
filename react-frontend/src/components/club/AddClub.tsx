@@ -1,17 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FootballClub } from "../../models/FootballClub";
 import { useState } from "react";
-import axios from "axios";
 import { BACKEND_URL } from "../../utils";
-import { Button, Card, CardActions, CardContent, Container, IconButton, TextField, FormLabel, colors } from "@mui/material";
+import { Button, Card, CardContent, Container, IconButton, TextField, FormLabel, colors } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useForm } from "react-hook-form";
+import { ClubMenu } from "./ClubMenu";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { Color } from '@material-ui/lab/Alert';
 
 
 export const AddClub = () => {
     const navigate = useNavigate();
     const [submitting, setSubmitting] = useState(false);
     const { register, handleSubmit } = useForm<FootballClub>();
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState<Color | undefined>(undefined);
 
     // const addClub = async (event: { preventDefault: () => void }) => {
     //     event.preventDefault();
@@ -33,10 +38,16 @@ export const AddClub = () => {
             },
             body: JSON.stringify(data),
             });
-            if (response.ok)
-                alert("Club added successfully");
-            else 
-                alert("Failed to add club");
+            if (response.ok) {
+                setOpen(true);
+                setMessage('Club added successfully');
+                setSeverity('success');
+            }
+            else {
+                setOpen(true);
+                setMessage('Failed to add club');
+                setSeverity('error');
+            }
             navigate("/clubs");
         } catch (error) {
             console.error(error);
@@ -47,6 +58,7 @@ export const AddClub = () => {
 
     return (
         <Container>
+            <ClubMenu />
             <Card>
                 <CardContent>
                     <IconButton component={Link} sx={{ mr: 3 }} to={`/clubs`}>
@@ -122,6 +134,11 @@ export const AddClub = () => {
                         <Button type="submit" variant="contained" sx={{ backgroundColor: colors.green[500] }}>Add club</Button>
                     </form>
                 </CardContent>
+                <Snackbar open={open} onClose={() => setOpen(false)}>
+                    <MuiAlert variant="filled" severity={severity}>
+                        {message}
+                    </MuiAlert>
+                </Snackbar>
             </Card>
         </Container>
     );

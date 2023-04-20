@@ -101,6 +101,13 @@ class ClubCompetitionsSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class CompetitionClubsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Competition
+        fields = '__all__'
+        depth = 1
+
+
 class CompetitionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Competition

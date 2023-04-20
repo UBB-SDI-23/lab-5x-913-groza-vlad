@@ -5,6 +5,7 @@ import { BACKEND_URL } from "../../utils";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FootballClub } from "../../models/FootballClub";
 import { useEffect, useState } from "react";
+import { ClubMenu } from "./ClubMenu";
 
 
 export const UpdateClub = () => {
@@ -20,8 +21,6 @@ export const UpdateClub = () => {
         city: "",
         budget: 0,
         home_kit: "",
-        players: [],
-        competitions: [],
     });
 
     useEffect(() => {
@@ -60,6 +59,7 @@ export const UpdateClub = () => {
 
     return (
         <Container>
+            <ClubMenu />
             <Card>
 				<CardContent>
                     <IconButton component={Link} sx={{ mr: 3 }} to={`/clubs`}>

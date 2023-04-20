@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FootballClub } from "../../models/FootballClub";
 import { BACKEND_URL } from "../../utils";
+import { ClubMenu } from "./ClubMenu";
 
 
 export const ClubPlayersDetails = () => {
@@ -22,6 +23,7 @@ export const ClubPlayersDetails = () => {
 
 	return (
 		<Container>
+			<ClubMenu />
 			<Card>
 				<CardContent>
 					<IconButton component={Link} sx={{ mr: 3 }} to={`/clubs`}>

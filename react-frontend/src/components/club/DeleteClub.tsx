@@ -2,6 +2,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../utils";
 import { Button, Card, CardActions, CardContent, Container, colors } from "@mui/material";
+import { ClubMenu } from "./ClubMenu";
 
 
 export const DeleteClub = () => {
@@ -21,6 +22,7 @@ export const DeleteClub = () => {
 
     return (
         <Container>
+			<ClubMenu />
             <Card>
 				<CardContent>
 					Are you sure you want to delete this football club?

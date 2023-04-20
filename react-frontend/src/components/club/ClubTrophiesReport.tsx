@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, colors } from "@mui/material";
 import { BACKEND_URL } from "../../utils";
+import { ClubMenu } from "./ClubMenu";
 
 
 interface FootballClubTrophies {
@@ -21,6 +22,7 @@ export const ClubsTrophies = () => {
 
     return (
       <Container>
+        <ClubMenu />
          <h2 style={{textAlign: "left", marginLeft: "12px"}}>FootballClubs and the number of trophies won</h2>
          {!loading && clubs.length === 0 && <div>No football clubs in the list</div>}
          {!loading &&
