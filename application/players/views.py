@@ -8,7 +8,7 @@ from rest_framework import generics
 from .models import FootballPlayer, FootballClub, Competition, Record
 from .serializers import FootballPlayerSerializer, FootballClubSerializer, CompetitionSerializer, RecordSerializer, \
     ClubRecordSerializer, ClubPlayersSerializer, ClubCompetitionsSerializer, ClubPlayersAgeSerializer, \
-    CompetitionClubsSerializer
+    CompetitionClubsSerializer, PlayerClubSerializer
 from django_filters import rest_framework as filters
 from django.db.models import Sum, Avg
 
@@ -245,3 +245,6 @@ class CompetitionsFootballClubDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Competition.objects.all()
 
 
+class PlayerClubDetail(generics.RetrieveUpdateAPIView):
+    serializer_class = PlayerClubSerializer
+    queryset = FootballPlayer.objects.all()

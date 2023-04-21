@@ -80,7 +80,7 @@ export const UpdatePlayer= () => {
     const updatePlayer = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         setLoading(true);
-        fetch(`${BACKEND_URL}/players/${playerId}/`, {
+        fetch(`${BACKEND_URL}/players/${playerId}/club`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(player)
