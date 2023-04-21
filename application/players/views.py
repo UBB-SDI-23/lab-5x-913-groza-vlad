@@ -41,10 +41,10 @@ def player_detail(request, pk, format=None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = FootballPlayerSerializer(player)
+        serializer = PlayerClubSerializer(player)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = FootballPlayerSerializer(player, data=request.data)
+        serializer = PlayerClubSerializer(player, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -243,8 +243,3 @@ class FootballClubCompetitionsDetail(generics.RetrieveUpdateDestroyAPIView):
 class CompetitionsFootballClubDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CompetitionClubsSerializer
     queryset = Competition.objects.all()
-
-
-class PlayerClubDetail(generics.RetrieveUpdateAPIView):
-    serializer_class = PlayerClubSerializer
-    queryset = FootballPlayer.objects.all()

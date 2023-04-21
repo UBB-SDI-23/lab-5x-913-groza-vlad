@@ -18,7 +18,7 @@ class FootballPlayerSerializer(serializers.ModelSerializer):
 class PlayerClubSerializer(serializers.ModelSerializer):
     class Meta:
         model = FootballPlayer
-        fields = ('id', 'first_name', 'last_name', 'nationality', 'age', 'position', 'club')
+        fields = "__all__"
         depth = 1
 
     def validate(self, data):
