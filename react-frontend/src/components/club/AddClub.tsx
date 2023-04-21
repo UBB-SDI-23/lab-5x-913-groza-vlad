@@ -6,8 +6,6 @@ import { Button, Card, CardContent, Container, IconButton, TextField, FormLabel,
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useForm } from "react-hook-form";
 import { ClubMenu } from "./ClubMenu";
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { Color } from '@material-ui/lab/Alert';
 
 
 export const AddClub = () => {
@@ -16,7 +14,6 @@ export const AddClub = () => {
     const { register, handleSubmit } = useForm<FootballClub>();
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
-    const [severity, setSeverity] = useState<Color | undefined>(undefined);
 
     // const addClub = async (event: { preventDefault: () => void }) => {
     //     event.preventDefault();
@@ -41,12 +38,12 @@ export const AddClub = () => {
             if (response.ok) {
                 setOpen(true);
                 setMessage('Club added successfully');
-                setSeverity('success');
+                // setSeverity('success');
             }
             else {
                 setOpen(true);
                 setMessage('Failed to add club');
-                setSeverity('error');
+                // setSeverity('error');
             }
             navigate("/clubs");
         } catch (error) {
@@ -134,11 +131,6 @@ export const AddClub = () => {
                         <Button type="submit" variant="contained" sx={{ backgroundColor: colors.green[500] }}>Add club</Button>
                     </form>
                 </CardContent>
-                <Snackbar open={open} onClose={() => setOpen(false)}>
-                    <MuiAlert variant="filled" severity={severity}>
-                        {message}
-                    </MuiAlert>
-                </Snackbar>
             </Card>
         </Container>
     );
