@@ -7,7 +7,6 @@ class FootballPlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = FootballPlayer
         fields = "__all__"
-        depth = 1
 
     def validate(self, data):
         if data.get('position') not in ['Goalkeeper', 'Defender', 'Midfielder', 'Forward']:
