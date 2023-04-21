@@ -13,7 +13,7 @@ export const PlayerClubDetails = () => {
 
     useEffect(() => {
 		const fetchClub = async () => {
-			const response = await fetch(`${BACKEND_URL}/players/${playerId}/club/`);
+			const response = await fetch(`${BACKEND_URL}/players/${playerId}/`);
 			const player = await response.json();
 			setPlayer(player);
 		};
