@@ -81,7 +81,7 @@ def create_football_clubs():
     print('Creating football clubs...')
     with open('football_clubs.csv', 'w', newline='') as f:
         fieldnames = ['id', 'name', 'establishment_year', 'country', 'city', 'budget', 'home_kit']
-        writer = csv.writer(f, fieldnames=fieldnames)
+        writer = csv.writer(f)
         # writer.writeheader()
         for i in range(len(clubs)):
             est_year = random.randint(1850, 2023)
@@ -108,7 +108,7 @@ def create_competitions():
     print('Creating competitions...')
     with open('competitions.csv', 'w', newline='') as f:
         fieldnames = ['id', 'name', 'number_of_participants', 'total_prizes', 'ko_stages', 'edition', 'description']
-        writer = csv.writer(f, fieldnames=fieldnames)
+        writer = csv.writer(f)
         # writer.writeheader()
         for i in range(len(competitions)):
             total_prizes = random.randint(2000000, 500000000)
@@ -136,7 +136,7 @@ def create_players():
     print('Creating players...')
     with open('players.csv', 'w', newline='') as f:
         fieldnames = ['id', 'first_name', 'last_name', 'nationality', 'age', 'position', 'club']
-        writer = csv.writer(f, fieldnames=fieldnames)
+        writer = csv.writer(f)
         # writer.writeheader()
         for i in range(1, PLAYERS + 1):
             first_name = fake.first_name()
@@ -166,7 +166,7 @@ def create_records():
 
     with open('records.csv', 'w', newline='') as f:
         fieldnames = ['id', 'club', 'competition', 'trophies_won', 'participations']
-        writer = csv.writer(f, fieldnames=fieldnames)
+        writer = csv.writer(f)
         # writer.writeheader()
 
         index = 0
