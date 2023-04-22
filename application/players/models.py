@@ -51,6 +51,7 @@ class Competition(models.Model):
     total_prizes = models.PositiveIntegerField()
     ko_stages = models.BooleanField(default=False)
     edition = models.PositiveIntegerField(default=1)
+    description = models.CharField(max_length=3000, default='')
     clubs = models.ManyToManyField('FootballClub', through='Record')
 
     def __str__(self):

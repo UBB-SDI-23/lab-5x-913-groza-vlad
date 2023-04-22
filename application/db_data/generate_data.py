@@ -103,14 +103,15 @@ def create_football_clubs():
 def create_competitions():
     print('Creating competitions...')
     with open('competitions.csv', 'w', newline='') as f:
-        fieldnames = ['id', 'name', 'number_of_participants', 'total_prizes', 'ko_stages', 'edition']
+        fieldnames = ['id', 'name', 'number_of_participants', 'total_prizes', 'ko_stages', 'edition', 'description']
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for i in range(len(competitions)):
             total_prizes = random.randint(2000000, 500000000)
             ko_stages = random.choice([True, False])
             edition = random.randint(1, 130)
-            writer.writerow({'id': i + 1, 'name': competitions[i][0], 'number_of_participants': competitions[i][1], 'total_prizes': total_prizes, 'ko_stages': ko_stages, 'edition': edition})
+            competition_description = "\n".join(fake.paragraphs(nb=3))
+            writer.writerow({'id': i + 1, 'name': competitions[i][0], 'number_of_participants': competitions[i][1], 'total_prizes': total_prizes, 'ko_stages': ko_stages, 'edition': edition, 'description': competition_description})
 
         for i in range(len(competitions) + 1, COMPETITIONS + 1):
             name = random.choice(competitions)[0] + '_' + str(random.randint(1, 1000))
@@ -118,7 +119,8 @@ def create_competitions():
             total_prizes = random.randint(2000000, 500000000)
             ko_stages = random.choice([True, False])
             edition = random.randint(1, 130)
-            writer.writerow({'id': i, 'name': name, 'number_of_participants': no_of_teams, 'total_prizes': total_prizes, 'ko_stages': ko_stages, 'edition': edition})
+            competition_description = "\n".join(fake.paragraphs(nb=2))
+            writer.writerow({'id': i, 'name': name, 'number_of_participants': no_of_teams, 'total_prizes': total_prizes, 'ko_stages': ko_stages, 'edition': edition, 'description': competition_description})
 
     print('Competitions created\n')
 
