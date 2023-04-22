@@ -9,7 +9,7 @@ fake = Faker()
 FOOTBALL_CLUBS = 1000000
 PLAYERS = 1000000
 COMPETITIONS = 1000000
-RECORDS = 5000000
+RECORDS = 3000000
 
 clubs = [
     ('FC Barcelona', 'Spain', 'Barcelona'),
