@@ -1,5 +1,7 @@
 import random
 import csv
+from multiprocessing import Process
+
 from faker import Faker
 
 fake = Faker()
@@ -8,7 +10,6 @@ FOOTBALL_CLUBS = 1000000
 PLAYERS = 1000000
 COMPETITIONS = 1000000
 RECORDS = 10000000
-
 
 clubs = [
     ('FC Barcelona', 'Spain', 'Barcelona'),
@@ -75,6 +76,7 @@ competitions = [
     ('Scottish Premiership', 12),
 ]
 
+
 def create_football_clubs():
     print('Creating football clubs...')
     with open('football_clubs.csv', 'w', newline='') as f:
@@ -85,7 +87,8 @@ def create_football_clubs():
             est_year = random.randint(1850, 2023)
             budget = random.randint(10000000, 1000000000)
             home_kit = fake.color_name()
-            writer.writerow({'id': i + 1, 'name': clubs[i][0], 'establishment_year': est_year, 'country': clubs[i][1], 'city': clubs[i][2], 'budget': budget, 'home_kit': home_kit})
+            writer.writerow({'id': i + 1, 'name': clubs[i][0], 'establishment_year': est_year, 'country': clubs[i][1],
+                             'city': clubs[i][2], 'budget': budget, 'home_kit': home_kit})
 
         for i in range(len(clubs) + 1, FOOTBALL_CLUBS + 1):
             est_year = random.randint(1850, 2023)
@@ -95,7 +98,8 @@ def create_football_clubs():
             name = rand_club[0] + '_' + str(random.randint(1, 1000))
             country = rand_club[1]
             city = rand_club[2]
-            writer.writerow({'id': i, 'name': name, 'establishment_year': est_year, 'country': country, 'city': city, 'budget': budget, 'home_kit': home_kit})
+            writer.writerow({'id': i, 'name': name, 'establishment_year': est_year, 'country': country, 'city': city,
+                             'budget': budget, 'home_kit': home_kit})
 
     print('Football clubs created\n')
 
@@ -111,7 +115,9 @@ def create_competitions():
             ko_stages = random.choice([True, False])
             edition = random.randint(1, 130)
             competition_description = "\n".join(fake.paragraphs(nb=3))
-            writer.writerow({'id': i + 1, 'name': competitions[i][0], 'number_of_participants': competitions[i][1], 'total_prizes': total_prizes, 'ko_stages': ko_stages, 'edition': edition, 'description': competition_description})
+            writer.writerow({'id': i + 1, 'name': competitions[i][0], 'number_of_participants': competitions[i][1],
+                             'total_prizes': total_prizes, 'ko_stages': ko_stages, 'edition': edition,
+                             'description': competition_description})
 
         for i in range(len(competitions) + 1, COMPETITIONS + 1):
             name = random.choice(competitions)[0] + '_' + str(random.randint(1, 1000))
@@ -120,7 +126,8 @@ def create_competitions():
             ko_stages = random.choice([True, False])
             edition = random.randint(1, 130)
             competition_description = "\n".join(fake.paragraphs(nb=2))
-            writer.writerow({'id': i, 'name': name, 'number_of_participants': no_of_teams, 'total_prizes': total_prizes, 'ko_stages': ko_stages, 'edition': edition, 'description': competition_description})
+            writer.writerow({'id': i, 'name': name, 'number_of_participants': no_of_teams, 'total_prizes': total_prizes,
+                             'ko_stages': ko_stages, 'edition': edition, 'description': competition_description})
 
     print('Competitions created\n')
 
@@ -138,9 +145,12 @@ def create_players():
             age = random.randint(16, 40)
             position = random.choice(['Goalkeeper', 'Defender', 'Midfielder', 'Forward'])
             club_id = random.randint(1, FOOTBALL_CLUBS)
-            writer.writerow({'id': i, 'first_name': first_name, 'last_name': last_name, 'nationality': nationality, 'age': age, 'position': position, 'club': club_id})
+            writer.writerow(
+                {'id': i, 'first_name': first_name, 'last_name': last_name, 'nationality': nationality, 'age': age,
+                 'position': position, 'club': club_id})
 
     print('Players created\n')
+
 
 def create_records():
     print('Creating records...')
@@ -164,15 +174,23 @@ def create_records():
             trophies_won = random.randint(0, 40)
             no_of_participations = random.randint(1, 100)
             index += 1
-            writer.writerow({'id': index, 'club': club_id, 'competition': competition_id, 'trophies_won': trophies_won, 'participations': no_of_participations})
+            writer.writerow({'id': index, 'club': club_id, 'competition': competition_id, 'trophies_won': trophies_won,
+                             'participations': no_of_participations})
 
     print('Records created\n')
 
 
 if __name__ == '__main__':
-    create_football_clubs()
-    create_competitions()
-    create_players()
-    create_records()
+    processes = []
+    for create_data in [create_football_clubs(),
+                        create_competitions(),
+                        create_players(),
+                        create_records()]:
+        proc = Process(target=create_data)
+        processes.append(proc)
+        proc.start()
+
+    for proc in processes:
+        proc.join()
 
     print("Done generating data!")
