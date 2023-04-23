@@ -32,7 +32,7 @@ class FootballClub(models.Model):
 class FootballPlayer(models.Model):
     # id = models.PositiveIntegerField(primary_key=True, editable=False)
     first_name = models.CharField(max_length=50, default='')
-    last_name = models.CharField(max_length=50, default='')
+    last_name = models.CharField(max_length=50, default='', blank=True, null=True)
     nationality = models.CharField(max_length=100)
     age = models.PositiveIntegerField()
     position = models.CharField(max_length=20, default='')
@@ -51,7 +51,7 @@ class Competition(models.Model):
     total_prizes = models.PositiveIntegerField()
     ko_stages = models.BooleanField(default=False)
     edition = models.PositiveIntegerField(default=1)
-    description = models.CharField(max_length=3000, default='')
+    description = models.CharField(max_length=3000, default='', blank=True, null=True)
     clubs = models.ManyToManyField('FootballClub', through='Record')
 
     def __str__(self):

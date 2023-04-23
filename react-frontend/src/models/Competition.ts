@@ -7,5 +7,6 @@ export interface Competition {
     total_prizes: number;
     ko_stages: boolean;
     edition: number;
+    description: string;
     clubs?: FootballClub[];
 }

@@ -19,6 +19,7 @@ export const UpdateCompetition = () => {
         total_prizes: 0,
         ko_stages: false,
         edition: 0,
+        description: "",
     });
 
     useEffect(() => {
@@ -123,6 +124,18 @@ export const UpdateCompetition = () => {
                                 variant="outlined"
                                 value={competition.edition}
                                 onChange={(event) => setCompetition({ ...competition, edition: parseInt(event.target.value) })}
+                            />
+                        </Container>
+
+                        <Container sx={{padding: "3px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
+                            <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
+                                Description
+                            </FormLabel>
+                            <TextField
+                                id="description"
+                                variant="outlined"
+                                value={competition.description}
+                                onChange={(event) => setCompetition({ ...competition, description: event.target.value })}
                             />
                         </Container>
                         

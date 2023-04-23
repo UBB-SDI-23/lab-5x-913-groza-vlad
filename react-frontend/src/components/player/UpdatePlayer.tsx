@@ -68,8 +68,8 @@ export const UpdatePlayer= () => {
                 nationality: player.nationality,
                 age: player.age,
                 position: player.position,
-                club_id: player.club.id,
-                club: player.club,
+                club_id: fetchedClub.id,
+                club: fetchedClub,
             });
 
             setLoading(false);
@@ -80,7 +80,7 @@ export const UpdatePlayer= () => {
     const updatePlayer = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         setLoading(true);
-        fetch(`${BACKEND_URL}/players/${playerId}/club/`, {
+        fetch(`${BACKEND_URL}/players/${playerId}/`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(player)
@@ -106,10 +106,10 @@ export const UpdatePlayer= () => {
 
     const fetchSuggestions = async (query: string) => {
 		try {
-			const response = await axios.get<FootballClub[]>(
+			const response = await axios.get(
 				`${BACKEND_URL}/clubs/`
 			);
-			const data = await response.data;
+			const data = await response.data.results;
             data.unshift(club.current);
 			setClubs(data);
 		} catch (error) {

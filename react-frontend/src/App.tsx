@@ -25,6 +25,12 @@ import { DeleteCompetition } from './components/competition/DeleteCompetition';
 import { CompetitionClubsDetails } from './components/competition/CompetitionClubsDetails';
 import { UpdateCompetition } from './components/competition/UpdateCompetition';
 import { AddCompetition } from './components/competition/AddCompetition';
+import { RecordHomePage } from './components/record/RecordHomePage';
+import { ShowAllRecords } from './components/record/ShowAllRecords';
+import { DeleteRecord } from './components/record/DeleteRecord';
+import { RecordDetails } from './components/record/RecordDetails';
+import { UpdateRecord } from './components/record/UpdateRecord';
+import { AddRecord } from './components/record/AddRecord';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -59,6 +65,13 @@ function App() {
           <Route path="/competitions/:competitionId/clubs" element={<CompetitionClubsDetails />} />
           <Route path="/competitions/:competitionId/edit" element={<UpdateCompetition />}/>
           <Route path="/competitions/add" element={<AddCompetition />} />
+
+          <Route path="/record-management" element={<RecordHomePage />} />
+          <Route path="/records" element={<ShowAllRecords />} />
+          <Route path="/records/:recordId/delete" element={<DeleteRecord />}/>
+          <Route path="/records/:recordId/details" element={<RecordDetails />} />
+          <Route path="/records/:recordId/edit" element={<UpdateRecord />}/>
+          <Route path="/records/add" element={<AddRecord />} />
           
         </Routes>    
       </Router>

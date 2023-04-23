@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Container, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, colors } from "@mui/material";
+import { SetStateAction, useEffect, useState } from "react";
+import { Container, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, colors, Box, Pagination } from "@mui/material";
 import { BACKEND_URL } from "../../utils";
 import { ClubMenu } from "./ClubMenu";
 
@@ -13,12 +13,21 @@ interface FootballClubTrophies {
 
 export const ClubsTrophies = () => {
     const [loading, setLoading] = useState(false);
-    const [clubs, setClubs] = useState([])
+    const [clubs, setClubs] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
+    const handlePageChange = (event: { preventDefault: () => void }, value: SetStateAction<number>) => {
+        event.preventDefault();
+        setPage(value);
+    };
 
     useEffect(() => {
         setLoading(true);
-        fetch(`${BACKEND_URL}/clubs/most-trophies/`).then(response => response.json()).then(data => { setClubs(data); setLoading(false); });
-    } , []);
+        fetch(`${BACKEND_URL}/clubs/most-trophies/?page=${page}&page_size=100`)
+        .then(response => response.json())
+        .then(data => { setClubs(data.results); setTotalPages(Math.ceil(data.count / 100)); setLoading(false); });
+    } , [page]);
 
     return (
       <Container>
@@ -28,7 +37,7 @@ export const ClubsTrophies = () => {
          {!loading &&
             clubs.length > 0 && (
                 // set the table background color to white and the text color to black
-                <TableContainer style={{backgroundColor: colors.grey[50]}}>
+                <><TableContainer style={{backgroundColor: colors.grey[50]}}>
                     <Table sx={{ minWidth: 400}} aria-label="simple table">
                         <TableHead>
                             <TableRow>
@@ -41,7 +50,7 @@ export const ClubsTrophies = () => {
                         <TableBody>
                         {clubs.map((club: FootballClubTrophies, index) => (
                             <TableRow key={club.id}>
-                                <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
+                                <TableCell align="center" component="th" scope="row">{(page - 1) * 100 + index + 1}</TableCell>
                                 <TableCell align="center" component="th" scope="row">{club.name}</TableCell>
                                 <TableCell align="center">{club.total_trophies}</TableCell>
                             </TableRow>
@@ -49,6 +58,19 @@ export const ClubsTrophies = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Box sx={{ mt: 2, align: "center", color: "white"}}>
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={handlePageChange}
+                        color="primary"
+                        size="large"
+                        showFirstButton
+                        showLastButton
+                        boundaryCount={2}
+                    />
+                </Box>
+                </>
             )
             } 
       </Container>

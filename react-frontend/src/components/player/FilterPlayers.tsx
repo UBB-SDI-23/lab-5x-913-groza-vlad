@@ -1,5 +1,5 @@
 import { SetStateAction, useState } from 'react';
-import { TextField, Button, Container, TableContainer, Table, colors, TableHead, TableCell, TableRow, TableBody, Tooltip, IconButton } from '@mui/material';
+import { TextField, Button, Container, TableContainer, Table, colors, TableHead, TableCell, TableRow, TableBody, Tooltip, IconButton, Box, Pagination } from '@mui/material';
 import { FootballPlayer } from '../../models/FootballPlayer';
 import { BACKEND_URL } from "../../utils";
 import { PlayerMenu } from './PlayerMenu';
@@ -12,15 +12,23 @@ export const PlayerFilterByAge = () => {
     const [age, setAge] = useState('');
     const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const handleAgeChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setAge(event.target.value);
     };
 
+    const handlePageChange = (event: { preventDefault: () => void }, value: SetStateAction<number>) => {
+        event.preventDefault();
+        setPage(value);
+    }
+
     const handleFilterClick = () => {
-        fetch(`${BACKEND_URL}/players/filter-age?age=${age}`)
+        setLoading(true);
+        fetch(`${BACKEND_URL}/players/filter-age/?age=${age}&page=${page}`)
         .then(response => response.json())
-        .then(data => setPlayers(data));
+        .then(data => {setPlayers(data.results); setTotalPages(Math.ceil(data.count / 100)); setLoading(false); });
     };
 
     return (
@@ -29,7 +37,7 @@ export const PlayerFilterByAge = () => {
             {!loading && players.length === 0 && <div>No football players older than this age</div>}
             {!loading &&
             players.length > 0 && (
-                <TableContainer style={{backgroundColor: colors.grey[50]}}>
+                <><TableContainer style={{backgroundColor: colors.grey[50]}}>
                     <Table sx={{ minWidth: 850}} aria-label="simple table">
                         <TableHead>
                             <TableRow>
@@ -46,7 +54,7 @@ export const PlayerFilterByAge = () => {
                         <TableBody>
                         {players.map((player: FootballPlayer, index) => (
                             <TableRow key={player.id}>
-                                <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
+                                <TableCell align="center" component="th" scope="row">{(page - 1) * 100 + index + 1}</TableCell>
                                 <TableCell align="center">{player.first_name}</TableCell>
                                 <TableCell align="center">{player.last_name}</TableCell>
                                 <TableCell align="center">{player.nationality}</TableCell>
@@ -85,6 +93,19 @@ export const PlayerFilterByAge = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Box sx={{ mt: 2, align: "center"}}>
+                    <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={handlePageChange}
+                    color="primary"
+                    size="large"
+                    showFirstButton
+                    showLastButton
+                    boundaryCount={2}
+                    />
+                </Box>
+                </>   
             )
             }
             <Container sx={{padding: "4px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-evenly"}}>

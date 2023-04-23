@@ -3,14 +3,22 @@ from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import generics
 from .models import FootballPlayer, FootballClub, Competition, Record
 from .serializers import FootballPlayerSerializer, FootballClubSerializer, CompetitionSerializer, RecordSerializer, \
     ClubRecordSerializer, ClubPlayersSerializer, ClubCompetitionsSerializer, ClubPlayersAgeSerializer, \
-    CompetitionClubsSerializer, PlayerClubSerializer
+    CompetitionClubsSerializer, PlayerClubSerializer, RecordPostSerializer
 from django_filters import rest_framework as filters
 from django.db.models import Sum, Avg
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_query_param = 'page'
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 
 @api_view(['GET', 'POST'])
@@ -20,8 +28,10 @@ def player_list(request, format=None):
     '''
     if request.method == 'GET':
         players = FootballPlayer.objects.all()
-        serializer = FootballPlayerSerializer(players, many=True)
-        return Response(serializer.data)
+        paginator = StandardResultsSetPagination()
+        result_page = paginator.paginate_queryset(players, request)
+        serializer = FootballPlayerSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == 'POST':
         serializer = FootballPlayerSerializer(data=request.data)
         if serializer.is_valid():
@@ -61,8 +71,10 @@ def club_list(request, format=None):
     '''
     if request.method == 'GET':
         clubs = FootballClub.objects.all()
-        serializer = FootballClubSerializer(clubs, many=True)
-        return Response(serializer.data)
+        paginator = StandardResultsSetPagination()
+        result_page = paginator.paginate_queryset(clubs, request)
+        serializer = FootballClubSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == 'POST':
         serializer = FootballClubSerializer(data=request.data)
         if serializer.is_valid():
@@ -108,6 +120,7 @@ class PlayersWithAge(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     queryset = FootballPlayer.objects.all()
     filterset_class = FootballPlayerFilter
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         return self.queryset
@@ -120,8 +133,10 @@ def competition_list(request, format=None):
     '''
     if request.method == 'GET':
         competitions = Competition.objects.all()
-        serializer = CompetitionSerializer(competitions, many=True)
-        return Response(serializer.data)
+        paginator = StandardResultsSetPagination()
+        result_page = paginator.paginate_queryset(competitions, request)
+        serializer = CompetitionSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == 'POST':
         serializer = CompetitionSerializer(data=request.data)
         if serializer.is_valid():
@@ -160,11 +175,13 @@ def record_list(request, format=None):
     List all the records / add a new record
     '''
     if request.method == 'GET':
-        records = Record.objects.all()
-        serializer = RecordSerializer(records, many=True)
-        return Response(serializer.data)
+        records = Record.objects.all().order_by('id')
+        paginator = StandardResultsSetPagination()
+        result_page = paginator.paginate_queryset(records, request)
+        serializer = RecordSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == 'POST':
-        serializer = RecordSerializer(data=request.data)
+        serializer = RecordPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -197,6 +214,7 @@ def record_detail(request, pk, format=None):
 
 class ClubsTrophiesSummary(generics.ListAPIView):
     serializer_class = ClubRecordSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         query = FootballClub.objects.\
@@ -210,6 +228,7 @@ class ClubsTrophiesSummary(generics.ListAPIView):
 
 class ClubsByAveragePlayersAge(generics.ListAPIView):
     serializer_class = ClubPlayersAgeSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         query = FootballClub.objects.\
@@ -222,6 +241,7 @@ class ClubsByAveragePlayersAge(generics.ListAPIView):
 
 class FootballClubView(generics.ListCreateAPIView):
     serializer_class = ClubPlayersSerializer
+    pagination_class = StandardResultsSetPagination
     queryset = FootballClub.objects.all()
 
 
@@ -232,6 +252,7 @@ class FootballClubDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class FootballClubCompetitionsView(generics.ListCreateAPIView):
     serializer_class = ClubCompetitionsSerializer
+    pagination_class = StandardResultsSetPagination
     queryset = FootballClub.objects.all()
 
 

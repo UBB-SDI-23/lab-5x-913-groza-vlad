@@ -113,17 +113,23 @@ class CompetitionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class RecordSerializer(serializers.ModelSerializer):
+class RecordPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Record
         fields = "__all__"
-        depth = 1
 
     def validate(self, data):
         if data.get('trophies_won') > data.get('no_of_participations'):
             raise serializers.ValidationError("Number of trophies won can't be greater than the number of "
                                               "participations of a team in a competition")
         return data
+
+
+class RecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Record
+        fields = "__all__"
+        depth = 1
 
 
 class ClubRecordSerializer(serializers.ModelSerializer):

@@ -68,10 +68,10 @@ export const AddPlayer = () => {
 
     const fetchSuggestions = async (query: string) => {
 		try {
-			const response = await axios.get<FootballClub[]>(
+			const response = await axios.get(
 				`${BACKEND_URL}/clubs/`
 			);
-			const data = await response.data;
+			const data = await response.data.results;
 			setClubs(data);
 		} catch (error) {
 			console.error("Error fetching suggestions:", error);
