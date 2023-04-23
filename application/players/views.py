@@ -175,7 +175,7 @@ def record_list(request, format=None):
     List all the records / add a new record
     '''
     if request.method == 'GET':
-        records = Record.objects.all().order_by('id')
+        records = Record.objects.all()
         paginator = StandardResultsSetPagination()
         result_page = paginator.paginate_queryset(records, request)
         serializer = RecordSerializer(result_page, many=True)
