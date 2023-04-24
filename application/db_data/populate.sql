@@ -6,10 +6,11 @@ ALTER TABLE players_record DROP CONSTRAINT players_record_competition_id_f0e666e
 ALTER TABLE players_footballplayer DROP CONSTRAINT players_footballplay_club_id_c0f157b9_fk_players_f;
 
 -- delete data from tables
-TRUNCATE TABLE players_footballclub;
-TRUNCATE TABLE players_footballplayer;
-TRUNCATE TABLE players_competition;
 TRUNCATE TABLE players_record;
+TRUNCATE TABLE players_footballplayer;
+TRUNCATE TABLE players_footballclub;
+TRUNCATE TABLE players_competition;
+
 
 -- insert data from the CSV files into tables
 \copy players_footballclub FROM 'football_clubs.csv' CSV HEADER;
