@@ -165,7 +165,7 @@ def create_records():
                 break
 
     with open('records.csv', 'w', newline='') as f:
-        fieldnames = ['id', 'club', 'competition', 'trophies_won', 'participations']
+        fieldnames = ['id', 'trophies_won', 'participations', 'club', 'competition']
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -174,8 +174,8 @@ def create_records():
             trophies_won = random.randint(0, 40)
             no_of_participations = random.randint(1, 100)
             index += 1
-            writer.writerow({'id': index, 'club': club_id, 'competition': competition_id, 'trophies_won': trophies_won,
-                             'participations': no_of_participations})
+            writer.writerow({'id': index, 'trophies_won': trophies_won,
+                             'participations': no_of_participations, 'club': club_id, 'competition': competition_id})
 
     print('Records created\n')
 
