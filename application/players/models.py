@@ -34,7 +34,7 @@ class FootballPlayer(models.Model):
     first_name = models.CharField(max_length=50, default='')
     last_name = models.CharField(max_length=50, default='', blank=True, null=True)
     nationality = models.CharField(max_length=100)
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(validators=[MinValueValidator(16), MaxValueValidator(40)])
     position = models.CharField(max_length=20, default='')
     club = models.ForeignKey(FootballClub, on_delete=models.CASCADE)
 

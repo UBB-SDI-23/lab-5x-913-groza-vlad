@@ -112,6 +112,11 @@ class CompetitionSerializer(serializers.ModelSerializer):
         model = Competition
         fields = "__all__"
 
+    def validate(self, data):
+        if len(data.get('name')) < 5:
+            raise serializers.ValidationError("The competition name must be at least 5 characters long!")
+        return data
+
 
 class RecordPostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -130,6 +135,12 @@ class RecordSerializer(serializers.ModelSerializer):
         model = Record
         fields = "__all__"
         depth = 1
+
+    def validate(self, data):
+        if data.get('trophies_won') > data.get('no_of_participations'):
+            raise serializers.ValidationError("Number of trophies won can't be greater than the number of "
+                                              "participations of a team in a competition")
+        return data
 
 
 class ClubRecordSerializer(serializers.ModelSerializer):
