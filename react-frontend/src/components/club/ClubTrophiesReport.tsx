@@ -68,6 +68,8 @@ export const ClubsTrophies = () => {
                         showFirstButton
                         showLastButton
                         boundaryCount={2}
+                        siblingCount={2}
+                        sx={{ '& .MuiPaginationItem-textPrimary': { color: '#fff' } }}
                     />
                 </Box>
                 </>

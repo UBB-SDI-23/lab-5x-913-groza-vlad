@@ -35,6 +35,22 @@ export const UpdatePlayer= () => {
         home_kit: "",
     })
 
+    const validPositions = ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'];
+    const [validPosition, setValidPosition] = useState(true);
+
+    const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const position = event.target.value;
+        setPlayer({ ...player, position });
+        setValidPosition(validPositions.includes(position));
+    };
+
+    const [validAge, setValidAge] = useState(true);
+    const handleAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const age = Number(event.target.value);
+        setPlayer({ ...player, age });
+        setValidAge(age >= 16 && age <= 40);
+    };
+
     useEffect(() => {
         // setLoading(true);
         // fetch(`${BACKEND_URL}/players/${playerId}/`).then(response => response.json()).then(data => {
@@ -186,7 +202,8 @@ export const UpdatePlayer= () => {
                                 id="age"
                                 variant="outlined"
                                 value={player.age}
-                                onChange={(event) => setPlayer({ ...player, age: Number(event.target.value) })}
+                                error={!validAge} 
+                                onChange={handleAgeChange}
                             />
                         </Container>
                         
@@ -198,7 +215,8 @@ export const UpdatePlayer= () => {
                                 id="position"
                                 variant="outlined"
                                 value={player.position}
-                                onChange={(event) => setPlayer({ ...player, position: event.target.value })}
+                                error={!validPosition}
+                                onChange={handlePositionChange}
                             />
                         </Container>
                         

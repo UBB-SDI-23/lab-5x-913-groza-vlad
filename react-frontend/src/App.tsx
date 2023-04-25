@@ -31,12 +31,14 @@ import { DeleteRecord } from './components/record/DeleteRecord';
 import { RecordDetails } from './components/record/RecordDetails';
 import { UpdateRecord } from './components/record/UpdateRecord';
 import { AddRecord } from './components/record/AddRecord';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <React.Fragment>
+      <ToastContainer />
 
       <Router>
         <Routes>

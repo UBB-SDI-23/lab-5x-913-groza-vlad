@@ -9,6 +9,8 @@ import { Record } from "../../models/Record";
 import { debounce } from "lodash";
 import { RecordMenu } from "./RecordMenu";
 import { Competition } from "../../models/Competition";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export const UpdateRecord= () => {
@@ -102,13 +104,17 @@ export const UpdateRecord= () => {
             if (response.ok) {
                 alert("Record updated successfully");
             } else {
+                if (record.trophies_won > record.no_of_participations)
+                    toast.error('Number of trophies won can\'t be higher than the number of participations', {
+                        position: toast.POSITION.BOTTOM_CENTER });
+                else
+                    alert("Error updating record");
                 console.error('Error updating record:', response.statusText);
-                alert("Error updating record")
             }
             navigate(`/records`);
             setLoading(false);
         }).catch(error => {
-            console.error('Error updating record:', error);
+            console.error('Error updating record1:', error);
             setLoading(false);
         });
     }
@@ -120,6 +126,7 @@ export const UpdateRecord= () => {
 
     return (
         <Container>
+            <ToastContainer />
             <RecordMenu />
             <Card>
 				<CardContent>
@@ -180,13 +187,13 @@ export const UpdateRecord= () => {
                                 onChange={(event) => setRecord({ ...record, no_of_participations: Number(event.target.value) })}
                             />
                         </Container>
-
                     </form>
 				</CardContent>
 				<CardActions sx={{ justifyContent: "center" }}>
 					<Button type="submit" onClick={updateRecord} variant="contained" sx={{ backgroundColor: colors.green[500] }}>Update</Button>
-					<Button onClick={handleCancel} variant="contained" sx={{ backgroundColor: colors.green[500] }}>Cancel</Button>
+                    <Button onClick={handleCancel} variant="contained" sx={{ backgroundColor: colors.green[500] }}>Cancel</Button>
 				</CardActions>
+               
 			</Card>
         </Container>
     );

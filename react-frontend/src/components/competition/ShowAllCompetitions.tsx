@@ -92,12 +92,14 @@ export const ShowAllCompetitions = () => {
                     </Table>
                 </TableContainer>
                 <Box sx={{ mt: 2, align: "center"}}>
-                    <Pagination sx = {{align: "center", color: "green"}}
+                    <Pagination
                         count={totalPages}
                         page={page}
                         onChange={handlePageChange}
                         color="primary"
                         size="large"
+                        siblingCount={2}
+                        sx={{ '& .MuiPaginationItem-textPrimary': { color: '#fff' } }}
                         showFirstButton
                         showLastButton
                         boundaryCount={2}

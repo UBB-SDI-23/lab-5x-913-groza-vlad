@@ -91,7 +91,7 @@ export const ShowAllPlayers = () => {
                     </Table>
                 </TableContainer>
                 <Box sx={{ mt: 2, align: "center"}}>
-                    <Pagination sx = {{align: "center", color: "green"}}
+                    <Pagination sx={{ '& .MuiPaginationItem-textPrimary': { color: '#fff' } }}
                         count={totalPages}
                         page={page}
                         onChange={handlePageChange}
@@ -100,6 +100,7 @@ export const ShowAllPlayers = () => {
                         showFirstButton
                         showLastButton
                         boundaryCount={2}
+                        siblingCount={2}
                     />
                 </Box>
                 </>   

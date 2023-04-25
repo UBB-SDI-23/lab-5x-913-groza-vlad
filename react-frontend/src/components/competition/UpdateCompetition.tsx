@@ -22,6 +22,13 @@ export const UpdateCompetition = () => {
         description: "",
     });
 
+    const [validName, setValidName] = useState(true);
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const name = event.target.value;
+        setCompetition({ ...competition, name: name });
+        setValidName(name.length >= 5);
+    };
+
     useEffect(() => {
         setLoading(true);
         fetch(`${BACKEND_URL}/competitions/${competitionId}/`).then(response => response.json()).then(data => {
@@ -74,7 +81,8 @@ export const UpdateCompetition = () => {
                                 id="name"
                                 variant="outlined"
                                 value={competition.name}
-                                onChange={(event) => setCompetition({ ...competition, name: event.target.value })}
+                                error={!validName}
+                                onChange={handleNameChange}
                             />
                         </Container>
     

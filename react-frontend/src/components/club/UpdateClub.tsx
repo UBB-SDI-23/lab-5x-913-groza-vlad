@@ -23,6 +23,17 @@ export const UpdateClub = () => {
         home_kit: "",
     });
 
+    const [validEstYear, setValidEstYear] = useState(true);
+
+    const handleEstYearChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const est_year = event.target.value;
+        setClub({ ...club, establishment_year: Number(est_year)});
+        if (parseInt(est_year) >=1850 && parseInt(est_year) <= 2023)
+            setValidEstYear(true);
+        else
+            setValidEstYear(false);
+    };
+
     useEffect(() => {
         setLoading(true);
         fetch(`${BACKEND_URL}/clubs/${clubId}/`).then(response => response.json()).then(data => {
@@ -43,6 +54,7 @@ export const UpdateClub = () => {
                 alert("Club updated successfully");
             } else {
                 console.error('Error updating club:', response.statusText);
+                alert("Error updating club");
             }
             navigate(`/clubs/`);
             setLoading(false);
@@ -86,7 +98,8 @@ export const UpdateClub = () => {
                                 id="establishment_year"
                                 variant="outlined"
                                 value={club.establishment_year}
-                                onChange={(event) => setClub({ ...club, establishment_year: parseInt(event.target.value) })}
+                                error={!validEstYear} 
+                                onChange={handleEstYearChange}
                             />
                         </Container>
 
@@ -122,7 +135,7 @@ export const UpdateClub = () => {
                                 id="budget"
                                 variant="outlined"
                                 value={club.budget}
-                                onChange={(event) => setClub({ ...club, budget: parseInt(event.target.value) })}
+                                onChange={(event) => setClub({ ...club, budget: Number(event.target.value) })}
                             />
                         </Container>
                         

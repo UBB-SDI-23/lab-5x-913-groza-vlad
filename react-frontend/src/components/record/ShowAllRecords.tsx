@@ -89,7 +89,7 @@ export const ShowAllRecords = () => {
                     </Table>
                 </TableContainer>
                 <Box sx={{ mt: 2, align: "center"}}>
-                    <Pagination
+                    <Pagination sx={{ '& .MuiPaginationItem-textPrimary': { color: '#fff' } }}
                     count={totalPages}
                     page={page}
                     onChange={handlePageChange}
@@ -97,6 +97,7 @@ export const ShowAllRecords = () => {
                     size="large"
                     showFirstButton
                     showLastButton
+                    siblingCount={2}
                     boundaryCount={4}
                     />
                 </Box>

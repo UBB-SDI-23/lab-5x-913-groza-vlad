@@ -23,6 +23,13 @@ export const AddCompetition = () => {
         description: "",
     });
 
+    const [validName, setValidName] = useState(true);
+
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const name = event.target.value;
+        setCompetition({ ...competition, name: name });
+        setValidName(name.length >= 5);
+    };
 
     const addCompetition = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
@@ -62,7 +69,8 @@ export const AddCompetition = () => {
                             <TextField
                                 id="name"
                                 variant="outlined"
-                                onChange={(event) => setCompetition({ ...competition, name: event.target.value })}
+                                error={!validName}
+                                onChange={handleNameChange}
                             />
                         </Container>
     

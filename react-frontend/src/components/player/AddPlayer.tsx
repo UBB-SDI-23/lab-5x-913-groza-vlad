@@ -26,6 +26,23 @@ export const AddPlayer = () => {
 
     const [clubs, setClubs] = useState<FootballClub[]>([]);
     
+    const validPositions = ['Goalkeeper', 'Defender', 'Midfielder', 'Forward'];
+    const [validPosition, setValidPosition] = useState(true);
+    const [validAge, setValidAge] = useState(true);
+
+    const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const position = event.target.value;
+        setPlayer({ ...player, position });
+        setValidPosition(validPositions.includes(position));
+    };
+
+    const handleAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const age = Number(event.target.value);
+        setPlayer({ ...player, age });
+        setValidAge(age >= 16 && age <= 40);
+    };
+        
+    
     // const addPlayer = async (event: { preventDefault: () => void }) => {
     //     event.preventDefault();
 	// 	try {
@@ -128,14 +145,17 @@ export const AddPlayer = () => {
                             <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
                                 Age
                             </FormLabel>
-                            <TextField onChange={(event) => setPlayer({ ...player, age: Number(event.target.value)})}/>
+                            <TextField error={!validAge} onChange={handleAgeChange}/>
                         </Container>
 
                         <Container sx={{padding: "3px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                             <FormLabel style={{marginTop: "15px", fontSize: "18px"}}>
                                 Position
                             </FormLabel>
-                            <TextField onChange={(event) => setPlayer({ ...player, position: event.target.value})}/>
+                            <TextField
+                                error={!validPosition}
+                                onChange={handlePositionChange}
+                            />
                         </Container>
 
                         <Container sx={{padding: "3px"}} style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>

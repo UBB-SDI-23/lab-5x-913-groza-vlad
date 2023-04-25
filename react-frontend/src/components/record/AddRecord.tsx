@@ -9,6 +9,8 @@ import axios from "axios";
 import { debounce } from "lodash";
 import { RecordMenu } from "./RecordMenu";
 import { Competition } from "../../models/Competition";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AddRecord = () => {
     const navigate = useNavigate();
@@ -25,24 +27,6 @@ export const AddRecord = () => {
 
     const [clubs, setClubs] = useState<FootballClub[]>([]);
     const [competitions, setCompetitions] = useState<Competition[]>([]);
-    
-    // const addPlayer = async (event: { preventDefault: () => void }) => {
-    //     event.preventDefault();
-	// 	try {
-	// 		await axios.post(`${BACKEND_URL}/players/`, player)
-    //         .then(() => {
-    //             alert("Player added successfully!");
-    //         })
-    //         .catch((reason: AxiosError) => {
-    //             console.log(reason.message);
-    //             alert("Failed to add player!");
-    //         });
-	// 		navigate("/players");
-	// 	} catch (error) {
-	// 		console.log(error);
-    //         alert("Failed to add player");
-	// 	}
-    // };
 
     const addRecord = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
@@ -55,8 +39,12 @@ export const AddRecord = () => {
             if (response.ok) {
                 alert("Record added successfully!");
             } else {
+                if (record.trophies_won > record.no_of_participations)
+                    toast.error('Number of trophies won can\'t be higher than the number of participations', {
+                        position: toast.POSITION.BOTTOM_CENTER });
+                else
+                    alert("Failed to add record");
                 console.error('Error adding record:', response.statusText);
-                alert("Failed to add record")
             }
             navigate(`/records`);
             setLoading(false);
@@ -100,8 +88,15 @@ export const AddRecord = () => {
 		}
 	};
 
+    const showErrorMessage = () => {
+        toast.error('Number of trophies won can\'t be higher than the number of participations', {
+            position: toast.POSITION.BOTTOM_CENTER
+        });
+    };
+
     return (
         <Container>
+            <ToastContainer />
             <RecordMenu />
             <Card>
                 <CardContent>
@@ -193,6 +188,7 @@ export const AddRecord = () => {
                         <Button type="submit" variant="contained" sx={{ backgroundColor: colors.green[500] }}>Add record</Button>
                     </form>
                 </CardContent>
+                <ToastContainer />
             </Card>
         </Container>
     );

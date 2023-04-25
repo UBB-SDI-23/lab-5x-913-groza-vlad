@@ -54,7 +54,7 @@ def player_detail(request, pk, format=None):
         serializer = PlayerClubSerializer(player)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = PlayerClubSerializer(player, data=request.data)
+        serializer = FootballPlayerSerializer(player, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
