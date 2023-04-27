@@ -9,7 +9,7 @@ import { RecordMenu } from "./RecordMenu";
 
 export const RecordDetails = () => {
 	const { recordId } = useParams();
-	const [record, setRecord] = useState<Record>();
+	const [record, setRecord] = useState<any>();
 
 	useEffect(() => {
 		const fetchClub = async () => {

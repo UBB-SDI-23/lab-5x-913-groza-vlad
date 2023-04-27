@@ -9,7 +9,7 @@ import { BACKEND_URL } from "../../utils";
 
 export const PlayerClubDetails = () => {
     const { playerId } = useParams();
-	const [player, setPlayer] = useState<FootballPlayer>();
+	const [player, setPlayer] = useState<any>();
 
     useEffect(() => {
 		const fetchClub = async () => {

@@ -23,7 +23,7 @@ export const UpdatePlayer= () => {
         nationality: "",
         age: 0,
         position: "",
-        club_id: 1,
+        club: 1,
     });
 
     const club = useRef<FootballClub>({
@@ -84,8 +84,8 @@ export const UpdatePlayer= () => {
                 nationality: player.nationality,
                 age: player.age,
                 position: player.position,
-                club_id: fetchedClub.id,
-                club: fetchedClub,
+                club: fetchedClub.id,
+                football_club: fetchedClub,
             });
 
             setLoading(false);
@@ -122,10 +122,10 @@ export const UpdatePlayer= () => {
 
     const fetchSuggestions = async (query: string) => {
 		try {
-			const response = await axios.get(
-				`${BACKEND_URL}/clubs/`
+			const response = await axios.get<FootballClub[]>(
+				`${BACKEND_URL}/clubs/autocomplete?query=${query}`
 			);
-			const data = await response.data.results;
+			const data = await response.data;
             data.unshift(club.current);
 			setClubs(data);
 		} catch (error) {
@@ -244,7 +244,7 @@ export const UpdatePlayer= () => {
                                     if (value) {
                                         console.log(value);
                                         club.current = value;
-                                        setPlayer({ ...player, club: value.id! as any as FootballClub });
+                                        setPlayer({ ...player, club: value.id });
                                     }
                                 }}
                             />

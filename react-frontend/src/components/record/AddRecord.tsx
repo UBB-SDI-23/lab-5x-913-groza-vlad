@@ -21,8 +21,8 @@ export const AddRecord = () => {
 		id: 0,
         trophies_won: 0,
         no_of_participations: 0,
-        club_id: 1,
-        competition_id: 1,
+        club: 1,
+        competition: 1,
 	});
 
     const [clubs, setClubs] = useState<FootballClub[]>([]);
@@ -57,14 +57,14 @@ export const AddRecord = () => {
 
     const fetchSuggestions = async (query: string) => {
 		try {
-			const response1 = await axios.get(
-				`${BACKEND_URL}/clubs/`
+			const response1 = await axios.get<FootballClub[]>(
+				`${BACKEND_URL}/clubs/autocomplete?query=${query}`
 			);
-            const response2 = await axios.get(
-				`${BACKEND_URL}/competitions/`
+            const response2 = await axios.get<Competition[]>(
+				`${BACKEND_URL}/competitions/autocomplete?query=${query}`
 			);
-			const clubs_data = await response1.data.results;
-            const competitions_data = await response2.data.results;
+			const clubs_data = await response1.data;
+            const competitions_data = await response2.data;
 			setClubs(clubs_data);
             setCompetitions(competitions_data);
 		} catch (error) {
@@ -115,19 +115,12 @@ export const AddRecord = () => {
                                 options={clubs}
                                 getOptionLabel={(option) => `${option.name} - ${option.country}`}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                renderOption={(props, option) => {
-                                    return (
-                                        <li {...props} key={option.id}>
-                                            {option.name}, {option.country}
-                                        </li>
-                                    );
-                                }}
                                 filterOptions={(x) => x}
                                 onInputChange={handleInputChange}
                                 onChange={(event, value) => {
                                     if (value) {
                                         console.log(value);
-                                        setRecord({ ...record, club_id: value.id });
+                                        setRecord({ ...record, club: value.id });
                                     }
                                 }}
                             />
@@ -144,19 +137,12 @@ export const AddRecord = () => {
                                 options={competitions}
                                 getOptionLabel={(option) => `${option.name}`}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                renderOption={(props, option) => {
-                                    return (
-                                        <li {...props} key={option.id}>
-                                            {option.name}
-                                        </li>
-                                    );
-                                }}
                                 filterOptions={(x) => x}
                                 onInputChange={handleInputChange}
                                 onChange={(event, value) => {
                                     if (value) {
                                         console.log(value);
-                                        setRecord({ ...record, competition_id: value.id });
+                                        setRecord({ ...record, competition: value.id });
                                     }
                                 }}
                             

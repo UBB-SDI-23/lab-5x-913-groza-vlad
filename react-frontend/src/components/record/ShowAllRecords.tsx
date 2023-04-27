@@ -48,7 +48,7 @@ export const ShowAllRecords = () => {
                         </TableHead>
                         
                         <TableBody>
-                        {records.map((record: Record, index) => (
+                        {records.map((record: any, index) => (
                             <TableRow key={record.id}>
                                 <TableCell align="center" component="th" scope="row">{(page - 1) * 200 + index + 1}</TableCell>
                                 <TableCell align="center">{record.club?.name}</TableCell>

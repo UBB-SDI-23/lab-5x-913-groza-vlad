@@ -24,8 +24,8 @@ export const UpdateRecord= () => {
         id: parseInt(String(recordId)),
         trophies_won: 0,
         no_of_participations: 0,
-        club_id: 1, 
-        competition_id: 1,
+        club: 1, 
+        competition: 1,
     });
 
     const club = useRef<FootballClub>({
@@ -82,10 +82,10 @@ export const UpdateRecord= () => {
                 id: record.id,
                 trophies_won: record.trophies_won,
                 no_of_participations: record.no_of_participations,
-                club_id: record.club_id,
-                competition_id: record.competition_id,
-                club: fetchedClub,
-                competition: fetchedCompetition,
+                club: record.club_id,
+                competition: record.competition_id,
+                club_id: fetchedClub,
+                competition_id: fetchedCompetition,
             });
 
             setLoading(false);
@@ -140,6 +140,7 @@ export const UpdateRecord= () => {
                             </FormLabel>
                             <Autocomplete
                                 disableClearable
+                                disabled
                                 style={{width: "250px", fontSize: "18px"}}
                                 id="club_id"
                                 options={clubs}
@@ -155,6 +156,7 @@ export const UpdateRecord= () => {
                             </FormLabel>
                             <Autocomplete
                                 disableClearable
+                                disabled
                                 style={{width: "250px", fontSize: "18px"}}
                                 id="competition_id"
                                 options={competitions}

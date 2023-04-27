@@ -7,6 +7,6 @@ export interface FootballPlayer {
     nationality: string;
     age: number;
     position: string;
-    club?: FootballClub;
-    club_id?: number;
+    club?: number;
+    football_club?: FootballClub;
 }

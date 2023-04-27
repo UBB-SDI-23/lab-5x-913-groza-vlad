@@ -21,7 +21,7 @@ export const AddPlayer = () => {
 		nationality: "",
         age: 0,
         position: "",
-        club_id: 1,
+        club: 1,
 	});
 
     const [clubs, setClubs] = useState<FootballClub[]>([]);
@@ -85,10 +85,10 @@ export const AddPlayer = () => {
 
     const fetchSuggestions = async (query: string) => {
 		try {
-			const response = await axios.get(
-				`${BACKEND_URL}/clubs/`
+			const response = await axios.get<FootballClub[]>(
+				`${BACKEND_URL}/clubs/autocomplete?query=${query}`
 			);
-			const data = await response.data.results;
+			const data = await response.data;
 			setClubs(data);
 		} catch (error) {
 			console.error("Error fetching suggestions:", error);
@@ -167,20 +167,13 @@ export const AddPlayer = () => {
                                 id="club_id"
                                 options={clubs}
                                 getOptionLabel={(option) => `${option.name} - ${option.country}`}
-                                renderOption={(props, option) => {
-                                    return (
-                                        <li {...props} key={option.id}>
-                                            {option.name}, {option.country}
-                                        </li>
-                                    );
-                                }}
                                 renderInput={(params) => <TextField {...params} variant="outlined" label="Club" />}
                                 filterOptions={(x) => x}
                                 onInputChange={handleInputChange}
                                 onChange={(event, value) => {
                                     if (value) {
                                         console.log(value);
-                                        setPlayer({ ...player, club_id: value.id });
+                                        setPlayer({ ...player, club: value.id });
                                     }
                                 }}
                             />
