@@ -219,8 +219,10 @@ class ClubsTrophiesSummary(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
+        # change the query so that the football clubs that doesn't have any record are not included
         query = FootballClub.objects.\
-            annotate(total_trophies=Sum('record__trophies_won')).\
+            annotate(total_trophies=Sum('record__trophies_won')). \
+            exclude(total_trophies=None). \
             values('id', 'name', 'total_trophies').\
             order_by('-total_trophies')
         print(query.query)
@@ -235,6 +237,7 @@ class ClubsByAveragePlayersAge(generics.ListAPIView):
     def get_queryset(self):
         query = FootballClub.objects.\
             annotate(average_age=Avg('footballplayer__age')).\
+            exclude(average_age=None).\
             order_by('average_age')
         print(query.query)
 
@@ -273,7 +276,7 @@ class FootballClubAutocompleteView(APIView):
 
     def get(self, request, *args, **kwargs):
         query = request.GET.get('query')
-        clubs = FootballClub.objects.filter(name__icontains=query).order_by('name')[:100]
+        clubs = FootballClub.objects.filter(name__icontains=query)[:100]
         serializer = FootballClubSerializer(clubs, many=True)
         return Response(serializer.data)
 
@@ -283,6 +286,6 @@ class CompetitionAutocompleteView(APIView):
 
     def get(self, request, *args, **kwargs):
         query = request.GET.get('query')
-        competitions = Competition.objects.filter(name__icontains=query).order_by('name')[:100]
+        competitions = Competition.objects.filter(name__icontains=query)[:100]
         serializer = CompetitionSerializer(competitions, many=True)
         return Response(serializer.data)
