@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework.views import APIView
+
 from .models import FootballPlayer, FootballClub, Competition, Record
 from .serializers import FootballPlayerSerializer, FootballClubSerializer, CompetitionSerializer, RecordSerializer, \
     ClubRecordSerializer, ClubPlayersSerializer, ClubCompetitionsSerializer, ClubPlayersAgeSerializer, \
@@ -264,3 +266,23 @@ class FootballClubCompetitionsDetail(generics.RetrieveUpdateDestroyAPIView):
 class CompetitionsFootballClubDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CompetitionClubsSerializer
     queryset = Competition.objects.all()
+
+
+class FootballClubAutocompleteView(APIView):
+    serializer_class = FootballClubSerializer
+
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('query')
+        clubs = FootballClub.objects.filter(name__icontains=query).order_by('name')[:100]
+        serializer = FootballClubSerializer(clubs, many=True)
+        return Response(serializer.data)
+
+
+class CompetitionAutocompleteView(APIView):
+    serializer_class = CompetitionSerializer
+
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('query')
+        competitions = Competition.objects.filter(name__icontains=query).order_by('name')[:100]
+        serializer = CompetitionSerializer(competitions, many=True)
+        return Response(serializer.data)
