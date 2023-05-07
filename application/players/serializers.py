@@ -1,6 +1,17 @@
+from datetime import datetime, timedelta
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Q
 from rest_framework import serializers
-from .models import FootballPlayer, FootballClub, Competition, Record
+from rest_framework.validators import UniqueValidator
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+
+from .models import FootballPlayer, FootballClub, Competition, Record, UserProfile
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import AccessToken
 
 
 class FootballPlayerSerializer(serializers.ModelSerializer):
@@ -26,6 +37,7 @@ class PlayerClubSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("The player position is invalid! It must be one of: Goalkeeper, "
                                               "Defender, Midfielder, Forward")
         return data
+
 
 class FootballClubSerializer(serializers.ModelSerializer):
     class Meta:
@@ -161,3 +173,111 @@ class ClubPlayersAgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = FootballClub
         fields = ('id', 'name', 'establishment_year', 'country', 'average_age')
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'is_active']
+
+
+class UserProfilesSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'first_name', 'last_name', 'bio', 'location', 'gender', 'user', 'entities_added']
+
+    def validate(self, data):
+        if len(data.get('first_name')) < 2:
+            raise serializers.ValidationError("The first name must be at least 2 characters long!")
+        if len(data.get('last_name')) < 2:
+            raise serializers.ValidationError("The last name must be at least 2 characters long!")
+        if data.get('gender') not in ['Male', 'Female']:
+            raise serializers.ValidationError('Gender must be either Male or Female!')
+        return data
+
+
+class ConfirmUserRegisterSerializer(serializers.ModelSerializer):
+    message = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['message']
+
+
+class RegisterMessageSerializer(serializers.ModelSerializer):
+    activation_token = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['activation_token']
+
+
+class LoginSerializer(TokenObtainPairSerializer):
+
+    def update(self, instance, validated_data):
+        super().update(instance, validated_data)
+
+    def validate(self, attrs):
+        authenticate_kwargs = {
+            "username": attrs[self.username_field],
+            "password": attrs["password"]
+        }
+        try:
+            authenticate_kwargs["request"] = self.context["request"]
+        except KeyError:
+            pass
+        self.user = self.auth(authenticate_kwargs)
+        if self.user is None:
+            self.error_messages['no_active_account'] = 'There is no active account with the given credentials'
+            raise AuthenticationFailed(self.error_messages['no_active_account'], 'no_active_account')
+        if not self.user.is_active:
+            access_token = AccessToken.for_user(self.user)
+            exp_time = datetime.now() + timedelta(minutes=10)
+            access_token['exp'] = int(exp_time.timestamp())
+            self.error_messages['no_active_account'] = 'The user account is not active'
+            raise AuthenticationFailed(self.error_messages['no_active_account'], 'no_active_account')
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
+    def auth(self, attrs):
+        UserModel = get_user_model()
+        try:
+            user = UserModel.objects.get(Q(username__iexact=attrs['username']))
+        except UserModel.DoesNotExist:
+            return None
+        else:
+            if user.check_password(attrs['password']):
+                return user
+        return None
+
+
+class RegisterSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
+    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
+    password = serializers.CharField(required=True, write_only=True, validators=[validate_password])
+    password2 = serializers.CharField(required=True, write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password', 'password2']
+
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError("The two passwords must match!")
+        return data
+
+    def create(self, validated_data):
+        user = User.objects.create(username=validated_data['username'],
+                                   email=validated_data['email'])
+        user.set_password(validated_data['password'])
+        user.is_active = False
+        user.save()
+
+        user_profile = UserProfile.objects.create(user=user)
+        user_profile.save()
+
+        return user

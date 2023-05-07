@@ -1,17 +1,25 @@
+from datetime import datetime, timedelta
+
+from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
-from rest_framework import status
+from rest_framework import status, permissions
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import FootballPlayer, FootballClub, Competition, Record
+from .models import FootballPlayer, FootballClub, Competition, Record, UserProfile
 from .serializers import FootballPlayerSerializer, FootballClubSerializer, CompetitionSerializer, RecordSerializer, \
     ClubRecordSerializer, ClubPlayersSerializer, ClubCompetitionsSerializer, ClubPlayersAgeSerializer, \
-    CompetitionClubsSerializer, PlayerClubSerializer, RecordPostSerializer
+    CompetitionClubsSerializer, PlayerClubSerializer, RecordPostSerializer, RegisterSerializer, UserSerializer, \
+    UserProfilesSerializer, ConfirmUserRegisterSerializer, LoginSerializer
 from django_filters import rest_framework as filters
 from django.db.models import Sum, Avg
 
@@ -289,3 +297,88 @@ class CompetitionAutocompleteView(APIView):
         competitions = Competition.objects.filter(name__icontains=query)[:100]
         serializer = CompetitionSerializer(competitions, many=True)
         return Response(serializer.data)
+
+
+class RegisterView(CreateAPIView):
+    serializer_class = RegisterSerializer
+    queryset = User.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        user = RegisterSerializer(data=request.data)
+        if user.is_valid():
+            user.save()
+        user = list(User.objects.filter(email=user.data['email']))[0]
+        access_token = AccessToken.for_user(user)
+        exp_time = datetime.now() + timedelta(minutes=10)
+        access_token['exp'] = int(exp_time.timestamp())
+        return Response({"activation_token": str(access_token)}, status=200)
+
+
+class UserDetailView(RetrieveAPIView):
+    serializer_class = UserProfilesSerializer
+
+    def get_queryset(self):
+        return UserProfile.objects.all()
+
+    def get_object(self):
+        try:
+            return self.get_queryset().get(id=self.kwargs["id"])
+        except UserProfile.DoesNotExist:
+            return {"ERROR": "User profile not found!"}
+
+
+class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserProfilesSerializer
+    queryset = UserProfile.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        try:
+            return self.get_queryset().get(user__id=self.request.user.id)
+        except UserProfile.DoesNotExist:
+            return {"ERROR": "User profile not found!"}
+
+    def put(self, request, *args, **kwargs):
+        user = list(UserProfile.objects.all().filter(user__id=self.request.user.id))[0]
+        user.first_name = request.data['first_name']
+        user.last_name = request.data['last_name']
+        user.bio = request.data['bio']
+        user.location = request.data['location']
+        user.gender = request.data['gender']
+        user.save()
+        print(request.data)
+        print(user)
+        return Response({"message": "User profile updated successfully!"}, status=200)
+
+    def delete(self, request, *args, **kwargs):
+        user = UserProfile.objects.get(user__id=self.request.user.id)
+        user.first_name = ''
+        user.last_name = ''
+        user.bio = ''
+        user.location = ''
+        user.gender = ''
+        user.save()
+        return Response({"message": "Profile updated successfully"}, status=200)
+
+
+class ConfirmRegisterView(generics.CreateAPIView):
+    serializer_class = ConfirmUserRegisterSerializer
+    # queryset = User.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        # serializer = ConfirmUserRegisterSerializer(data=request.data)
+        try:
+            token = kwargs['token']
+            access_token = AccessToken(token)
+            user_id = access_token.get('user_id')
+            user = list(User.objects.filter(id=user_id))[0]
+            user.is_active = True
+            user.save()
+        except TokenError:
+            return Response({"error": "Invalid token"}, status=400)
+        return Response({"message": "User activated successfully"}, status=200)
+
+
+class LoginView(TokenObtainPairView):
+    queryset = User.objects.all()
+    serializer_class = LoginSerializer

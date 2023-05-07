@@ -1,9 +1,12 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework_simplejwt.views import TokenRefreshView
+
 from .views import player_detail, player_list, club_detail, club_list, PlayersWithAge, \
     competition_list, competition_detail, record_list, record_detail, ClubsTrophiesSummary, FootballClubView, \
     FootballClubDetail, FootballClubCompetitionsView, FootballClubCompetitionsDetail, ClubsByAveragePlayersAge, \
-    CompetitionsFootballClubDetail, FootballClubAutocompleteView, CompetitionAutocompleteView
+    CompetitionsFootballClubDetail, FootballClubAutocompleteView, CompetitionAutocompleteView, RegisterView, \
+    UserProfileView, UserDetailView, ConfirmRegisterView, LoginView
 
 urlpatterns = [
     path('players/', player_list),
@@ -24,6 +27,13 @@ urlpatterns = [
     path('competitions/<int:pk>/clubs/', CompetitionsFootballClubDetail.as_view()),
     path('clubs/autocomplete/', FootballClubAutocompleteView.as_view()),
     path('competitions/autocomplete/', CompetitionAutocompleteView.as_view()),
+    path('register/', RegisterView.as_view()),
+    path('users/profile/', UserProfileView.as_view()),
+    path('users/profile/<int:pk>/', UserDetailView.as_view()),
+    path('register/confirm/<str:token>/', ConfirmRegisterView.as_view()),
+    path('login/', LoginView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
