@@ -47,11 +47,12 @@ export const ShowAllClubs = () => {
                                 <TableCell align="center">Budget</TableCell>
                                 <TableCell align="center">Home Kit</TableCell>
                                 <TableCell>Operations</TableCell>
+                                <TableCell align="center">User</TableCell>
                             </TableRow>
                         </TableHead>
                         
                         <TableBody>
-                        {clubs.sort((a: FootballClub, b: FootballClub) => a.establishment_year - b.establishment_year).map((club: FootballClub, index) => (
+                        {clubs.sort((a: FootballClub, b: FootballClub) => a.establishment_year - b.establishment_year).map((club: any, index) => (
                             <TableRow key={club.id}>
                                 <TableCell align="center" component="th" scope="row">{(page - 1) * 100 + index + 1}</TableCell>
                                 <TableCell align="center" component="th" scope="row">
@@ -97,6 +98,14 @@ export const ShowAllClubs = () => {
                                         <Tooltip title="Delete club" arrow>
                                             <DeleteForeverIcon />
                                         </Tooltip>
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <IconButton
+                                        component={Link}
+                                        sx={{ fontSize: 13 , color: '#000'}}
+                                        to={`/user-profile/${club?.user?.id}`}>
+                                        {club?.user?.username}
                                     </IconButton>
                                 </TableCell>
                             </TableRow>

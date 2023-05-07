@@ -9,4 +9,5 @@ export interface FootballPlayer {
     position: string;
     club?: number;
     football_club?: FootballClub;
+    user?: number;
 }

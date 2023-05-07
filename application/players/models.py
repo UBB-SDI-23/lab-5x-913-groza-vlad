@@ -84,4 +84,4 @@ class UserProfile(models.Model):
         players = FootballPlayer.objects.filter(user=self.user).count()
         competitions = Competition.objects.filter(user=self.user).count()
         records = Record.objects.filter(user=self.user).count()
-        return clubs + players + competitions + records
+        return [clubs, players, competitions, records]

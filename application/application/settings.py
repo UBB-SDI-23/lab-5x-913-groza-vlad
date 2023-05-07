@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_swagger',
     'drf_yasg',
+    'django_extensions',
     'django_filters',
     'players',
 ]

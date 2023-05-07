@@ -9,4 +9,5 @@ export interface Competition {
     edition: number;
     description: string;
     clubs?: FootballClub[];
+    user?: number;
 }

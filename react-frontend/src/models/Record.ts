@@ -10,4 +10,5 @@ export interface Record {
     competition?: number;
     trophies_won: number;
     no_of_participations: number;
+    user?: number;
 }

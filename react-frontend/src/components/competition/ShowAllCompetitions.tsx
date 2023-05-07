@@ -45,11 +45,12 @@ export const ShowAllCompetitions = () => {
                                 <TableCell align="center">Edition</TableCell>
                                 <TableCell align="center">Description</TableCell>
                                 <TableCell>Operations</TableCell>
+                                <TableCell align="center">User</TableCell>
                             </TableRow>
                         </TableHead>
                         
                         <TableBody>
-                        {competitions.map((competition: Competition, index) => (
+                        {competitions.map((competition: any, index) => (
                             <TableRow key={competition.id}>
                                 <TableCell align="center" component="th" scope="row">{(page - 1) * 100 + index + 1}</TableCell>
                                 <TableCell align="center">{competition.name}</TableCell>
@@ -86,6 +87,14 @@ export const ShowAllCompetitions = () => {
                                         </Tooltip>
                                     </IconButton>
                                 </TableCell>
+                                <TableCell align="center">
+                                        <IconButton
+                                            component={Link}
+                                            sx={{ fontSize: 13 , color: '#000'}}
+                                            to={`/user-profile/${competition?.user?.id}`}>
+                                            {competition?.user?.username}
+                                        </IconButton>
+                                    </TableCell>
                             </TableRow>
                         ))}
                         </TableBody>

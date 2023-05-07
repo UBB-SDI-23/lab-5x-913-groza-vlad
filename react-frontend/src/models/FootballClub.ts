@@ -11,4 +11,5 @@ export interface FootballClub {
     home_kit: string;
     competitions?: Competition[];
     players?: FootballPlayer[];
+    user?: number;
 }

@@ -3,7 +3,7 @@ import ReadMoreIcon from "@mui/icons-material/ReadMore"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import { Container, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, colors, Pagination, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../../utils";
 import { PlayerMenu } from "./PlayerMenu";
 import { FootballPlayer } from "../../models/FootballPlayer";
@@ -44,12 +44,13 @@ export const ShowAllPlayers = () => {
                                 <TableCell align="center">Nationality</TableCell>
                                 <TableCell align="center">Age</TableCell>
                                 <TableCell align="center">Position</TableCell>
-                                <TableCell>Operations</TableCell>
+                                <TableCell align="center">Operations</TableCell>
+                                <TableCell align="center">User</TableCell>
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
-                            {players.map((player: FootballPlayer, index) => (
+                            {players.map((player: any, index) => (
                                 <TableRow key={player.id}>
                                     <TableCell align="center" component="th" scope="row">{(page - 1) * 100 + index + 1}</TableCell>
                                     <TableCell align="center">{player.first_name}</TableCell>
@@ -83,6 +84,14 @@ export const ShowAllPlayers = () => {
                                             <Tooltip title="Delete player" arrow>
                                                 <DeleteForeverIcon />
                                             </Tooltip>
+                                        </IconButton>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <IconButton
+                                            component={Link}
+                                            sx={{ fontSize: 13 , color: '#000'}}
+                                            to={`/user-profile/${player?.user?.id}`}>
+                                            {player?.user?.username}
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>

@@ -48,11 +48,12 @@ export const PlayerFilterByAge = () => {
                                 <TableCell align="center">Age</TableCell>
                                 <TableCell align="center">Position</TableCell>
                                 <TableCell>Operations</TableCell>
+                                <TableCell>User</TableCell>
                             </TableRow>
                         </TableHead>
                         
                         <TableBody>
-                        {players.map((player: FootballPlayer, index) => (
+                        {players.map((player: any, index) => (
                             <TableRow key={player.id}>
                                 <TableCell align="center" component="th" scope="row">{(page - 1) * 100 + index + 1}</TableCell>
                                 <TableCell align="center">{player.first_name}</TableCell>
@@ -86,6 +87,14 @@ export const PlayerFilterByAge = () => {
                                         <Tooltip title="Delete player" arrow>
                                             <DeleteForeverIcon />
                                         </Tooltip>
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <IconButton
+                                        component={Link}
+                                        sx={{ fontSize: 13 , color: '#000'}}
+                                        to={`/user-profile/${player?.user?.id}`}>
+                                        {player?.user?.username}
                                     </IconButton>
                                 </TableCell>
                             </TableRow>

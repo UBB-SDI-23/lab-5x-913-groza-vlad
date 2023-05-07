@@ -40,7 +40,7 @@ def player_list(request, format=None):
         players = FootballPlayer.objects.all()
         paginator = StandardResultsSetPagination()
         result_page = paginator.paginate_queryset(players, request)
-        serializer = FootballPlayerSerializer(result_page, many=True)
+        serializer = PlayerClubSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
     elif request.method == 'POST':
         serializer = FootballPlayerSerializer(data=request.data)
@@ -322,7 +322,7 @@ class UserDetailView(RetrieveAPIView):
 
     def get_object(self):
         try:
-            return self.get_queryset().get(id=self.kwargs["id"])
+            return self.get_queryset().get(id=self.kwargs["pk"])
         except UserProfile.DoesNotExist:
             return {"ERROR": "User profile not found!"}
 

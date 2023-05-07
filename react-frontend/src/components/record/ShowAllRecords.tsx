@@ -44,6 +44,7 @@ export const ShowAllRecords = () => {
                                 <TableCell align="center">Trophies Won</TableCell>
                                 <TableCell align="center">Participations</TableCell>
                                 <TableCell>Operations</TableCell>
+                                <TableCell align="center">User</TableCell>
                             </TableRow>
                         </TableHead>
                         
@@ -83,6 +84,14 @@ export const ShowAllRecords = () => {
                                         </Tooltip>
                                     </IconButton>
                                 </TableCell>
+                                <TableCell align="center">
+                                        <IconButton
+                                            component={Link}
+                                            sx={{ fontSize: 13 , color: '#000'}}
+                                            to={`/user-profile/${record?.user?.id}`}>
+                                            {record?.user?.username}
+                                        </IconButton>
+                                    </TableCell>
                             </TableRow>
                         ))}
                         </TableBody>

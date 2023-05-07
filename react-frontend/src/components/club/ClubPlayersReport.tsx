@@ -3,13 +3,13 @@ import { Container, Table, TableContainer, TableHead, TableRow, TableCell, Table
 import { BACKEND_URL } from "../../utils";
 import { ClubMenu } from "./ClubMenu";
 
-
 interface FootballClubPlayers {
     id: number;
     name: string,
     establishment_year: number,
     country: string,
     average_age: number;
+    user: number;
 }
 
 
@@ -47,6 +47,7 @@ export const ClubsPlayersAge = () => {
                                 <TableCell align="center">Establishment Year</TableCell>
                                 <TableCell align="center">Country</TableCell>
                                 <TableCell align="center">Average Age</TableCell>
+                                <TableCell align="center">User</TableCell>
                             </TableRow>
                         </TableHead>
                         

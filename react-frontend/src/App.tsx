@@ -32,6 +32,7 @@ import { RecordDetails } from './components/record/RecordDetails';
 import { UpdateRecord } from './components/record/UpdateRecord';
 import { AddRecord } from './components/record/AddRecord';
 import { ToastContainer } from 'react-toastify';
+import { ShowUserProfile } from './components/users/ShowUserProfile';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -74,6 +75,8 @@ function App() {
           <Route path="/records/:recordId/details" element={<RecordDetails />} />
           <Route path="/records/:recordId/edit" element={<UpdateRecord />}/>
           <Route path="/records/add" element={<AddRecord />} />
+
+          <Route path="/user-profile/:userId" element={<ShowUserProfile />} />
           
         </Routes>    
       </Router>
