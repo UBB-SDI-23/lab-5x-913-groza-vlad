@@ -38,7 +38,7 @@ def create_users():
     insert_user_profile = 'INSERT INTO players_userprofile (first_name, last_name, bio, location, gender, user_id) VALUES '
     usernames = {}
     emails = {}
-    for u_id in range(3, USERS + 1):
+    for u_id in range(1, USERS + 1):
         if user_nr != 0:
             insert_user += ","
             insert_user_profile += ","
